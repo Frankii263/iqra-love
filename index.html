@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>I Love You Iqra</title>
+  <title>I Love You Pari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
       background: url('https://i.imgur.com/djA9l5e.jpeg') no-repeat center center fixed;
       background-size: cover;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
     }
 
     .enter-screen {
@@ -35,6 +39,7 @@
       cursor: pointer;
       box-shadow: 0 0 20px #ff4da6;
       transition: 0.3s;
+      font-weight: bold;
     }
 
     .enter-screen button:hover {
@@ -42,20 +47,37 @@
       box-shadow: 0 0 30px #ff66cc;
     }
 
-    .content {
-      display: none;
+    .content, .message-line, .final-popup {
       position: absolute;
-      top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
       text-align: center;
-      z-index: 2;
-      font-size: 3em;
       font-weight: bold;
+      color: #fff;
+    }
+
+    .content {
+      top: 30%;
+      font-size: 3em;
+      font-family: 'Dancing Script', cursive;
       white-space: nowrap;
-      overflow: hidden;
       border-right: 3px solid #fff;
       animation: blink-caret 0.75s step-end infinite;
+    }
+
+    .message-line {
+      top: 45%;
+      font-size: 1.8em;
+    }
+
+    .final-popup {
+      top: 40%;
+      display: none;
+      font-size: 1.8em;
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff4da6;
     }
 
     @keyframes blink-caret {
@@ -74,60 +96,19 @@
     }
 
     @keyframes float {
-      0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
-      }
-
-      50% {
-        opacity: 1;
-      }
-
-      100% {
-        transform: translateY(-10vh) scale(1.2);
-        opacity: 0;
-      }
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
-    .effect-glow { text-shadow: 0 0 30px #ff66cc; }
-    .effect-rotate { transform: translate(-50%, -50%) rotate(5deg) scale(1.1); }
-    .effect-scale { transform: translate(-50%, -50%) scale(1.3); }
-    .effect-bounce { animation: bounce 1s infinite; }
-    .effect-fade { animation: fade 2s infinite alternate; }
-    .effect-flip { transform: translate(-50%, -50%) rotateY(180deg); transition: 1s; }
-    .effect-slide { transform: translate(-50%, -30%); transition: 0.6s; }
-    .effect-blur { filter: blur(2px); transition: 0.5s; }
-    .effect-shadow { text-shadow: 0 0 20px #ff4da6, 0 0 30px #ff3399; }
-    .effect-pulse { animation: pulse 1.5s infinite; }
-    .effect-shake { animation: shake 0.6s infinite; }
-    .effect-zoom { transform: translate(-50%, -50%) scale(1.5); transition: 0.4s; }
-
-    @keyframes bounce {
-      0%, 100% { transform: translate(-50%, -60%); }
-      50% { transform: translate(-50%, -45%); }
-    }
-
-    @keyframes fade {
-      from { opacity: 0.3; }
-      to { opacity: 1; }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translate(-50%, -50%) translateX(0); }
-      25% { transform: translate(-50%, -50%) translateX(-5px); }
-      75% { transform: translate(-50%, -50%) translateX(5px); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+    .colorful {
+      transition: all 0.5s ease;
     }
   </style>
 </head>
 <body>
   <div class="enter-screen" id="enterScreen">
-    <h2 style="color:#fff;">❤️ Special for You, Iqra ❤️</h2>
+    <h2 style="color:#fff;">❤️ Special for You, Pari ❤️</h2>
     <button onclick="startLove()">Enter</button>
   </div>
 
@@ -136,15 +117,37 @@
   </audio>
 
   <div class="content" id="loveText"></div>
+  <div class="message-line colorful" id="messageLine"></div>
+  <div class="final-popup" id="finalPopup"></div>
 
   <script>
     const loveText = document.getElementById("loveText"),
           music = document.getElementById("bg-music"),
-          enterScreen = document.getElementById("enterScreen");
+          enterScreen = document.getElementById("enterScreen"),
+          messageLine = document.getElementById("messageLine"),
+          finalPopup = document.getElementById("finalPopup");
 
-    const effects = ['effect-glow', 'effect-rotate', 'effect-scale', 'effect-bounce', 'effect-fade', 'effect-flip', 'effect-slide', 'effect-blur', 'effect-shadow', 'effect-pulse', 'effect-shake', 'effect-zoom'];
     const colors = ['#ff66cc', '#ff3399', '#ff4da6', '#ff99cc', '#ffb3d9', '#ff0080', '#ff0066', '#ffffff', '#ffeeee', '#ffcccc'];
-    const fullText = " I LOVE YOU IQRA ❤️";
+
+    const fullText = " I LOVE YOU PARI ❤️";
+    const customLines = [
+      "mere sakoon ❤️",
+      "merii ladlii shehzadii ❤️",
+      "merii sab sy piiyari jawn ❤️",
+      "merii rooh ❤️",
+      "merii rooh k sakoon ❤️",
+      "merii chahto kii iklotii waris ❤️",
+      "mere jeeny ki waja ❤️",
+      "merii takat ❤️",
+      "mera sab kuch ho awp ❤️",
+      "i love you apnii jan sy b ziiyadaw ❤️"
+    ];
+
+    const finalMessages = [
+      ...customLines,
+      "Apna dil, apni saansein, apni duniya tumhein deta hoon ❤️"
+    ];
+
     let charIndex = 0;
 
     function createHeart() {
@@ -163,9 +166,39 @@
         charIndex++;
         setTimeout(typeWriter, 150);
       } else {
-        changeEffect();
-        setInterval(changeEffect, 3000);
+        showCustomLines(0);
+        setInterval(createHeart, 300);
       }
+    }
+
+    function showCustomLines(index) {
+      if (index < customLines.length) {
+        messageLine.textContent = customLines[index];
+        messageLine.style.color = colors[Math.floor(Math.random() * colors.length)];
+        setTimeout(() => showCustomLines(index + 1), 2000);
+      } else {
+        messageLine.style.display = "none";
+        showFinalPopup();
+      }
+    }
+
+    function showFinalPopup() {
+      finalPopup.style.display = "block";
+      finalPopup.innerHTML = "";
+      let i = 0;
+      const showNext = () => {
+        if (i < finalMessages.length) {
+          const line = document.createElement("div");
+          line.textContent = finalMessages[i];
+          line.style.color = colors[Math.floor(Math.random() * colors.length)];
+          line.style.margin = "10px 0";
+          line.style.fontWeight = "bold";
+          finalPopup.appendChild(line);
+          i++;
+          setTimeout(showNext, 2000);
+        }
+      };
+      showNext();
     }
 
     function startLove() {
@@ -173,14 +206,6 @@
       loveText.style.display = "block";
       music.play();
       typeWriter();
-      setInterval(createHeart, 300);
-    }
-
-    function changeEffect() {
-      const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      loveText.className = "content " + randomEffect;
-      loveText.style.color = randomColor;
     }
   </script>
 </body>
