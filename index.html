@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>I Love You Iqra</title>
+<style>
+html, body {margin:0;padding:0;height:100%;overflow:hidden;background:black;font-family:'Segoe UI',sans-serif;}
+.enter-screen{display:flex;justify-content:center;align-items:center;height:100vh;background:#000;flex-direction:column;z-index:10;position:relative;}
+.enter-screen button{background:#ff4da6;color:#fff;padding:20px 40px;font-size:24px;border:none;border-radius:12px;cursor:pointer;box-shadow:0 0 20px #ff4da6;transition:0.3s;}
+.enter-screen button:hover{transform:scale(1.1);box-shadow:0 0 30px #ff66cc;}
+video.bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;display:none;}
+.content{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;z-index:2;font-size:3em;font-weight:bold;white-space:nowrap;overflow:hidden;border-right:3px solid #fff;animation:blink-caret 0.75s step-end infinite;}
+@keyframes blink-caret{50%{border-color:transparent;}}
+.heart{position:fixed;color:red;font-size:24px;animation:float 6s linear infinite;opacity:0.7;z-index:1;}
+@keyframes float{0%{transform:translateY(100vh) scale(0.5);opacity:0;}50%{opacity:1;}100%{transform:translateY(-10vh) scale(1.2);opacity:0;}}
+.effect-glow{text-shadow:0 0 30px #ff66cc;}
+.effect-rotate{transform:translate(-50%,-50%) rotate(5deg) scale(1.1);}
+.effect-scale{transform:translate(-50%,-50%) scale(1.3);}
+.effect-bounce{animation:bounce 1s infinite;}
+.effect-fade{animation:fade 2s infinite alternate;}
+.effect-flip{transform:translate(-50%,-50%) rotateY(180deg);transition:1s;}
+.effect-slide{transform:translate(-50%,-30%);transition:0.6s;}
+.effect-blur{filter:blur(2px);transition:0.5s;}
+.effect-shadow{text-shadow:0 0 20px #ff4da6,0 0 30px #ff3399;}
+.effect-pulse{animation:pulse 1.5s infinite;}
+.effect-shake{animation:shake 0.6s infinite;}
+.effect-zoom{transform:translate(-50%,-50%) scale(1.5);transition:0.4s;}
+@keyframes bounce{0%,100%{transform:translate(-50%,-60%);}50%{transform:translate(-50%,-45%);}}
+@keyframes fade{from{opacity:0.3;}to{opacity:1;}}
+@keyframes shake {0%,100%{transform:translate(-50%,-50%) translateX(0);}25%{transform:translate(-50%,-50%) translateX(-5px);}75%{transform:translate(-50%,-50%) translateX(5px);}}
+@keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
+</style></head><body>
+<div class="enter-screen" id="enterScreen">
+  <h2 style="color:#fff;">❤️ Special for You, Iqra ❤️</h2>
+  <button onclick="startLove()">Enter</button>
+</div>
+<video class="bg-video" id="bgVideo" autoplay muted loop>
+  <source src="static/beach.mp4" type="video/mp4">
+</video>
+<audio id="bg-music" loop>
+  <source src="static/phir_bhi_tumko.mp3" type="audio/mpeg">
+</audio>
+<div class="content" id="loveText"></div>
+<script>
+const loveText = document.getElementById("loveText"), video = document.getElementById("bgVideo"),
+      music = document.getElementById("bg-music"), enterScreen = document.getElementById("enterScreen");
+const effects = ['effect-glow','effect-rotate','effect-scale','effect-bounce','effect-fade','effect-flip','effect-slide','effect-blur','effect-shadow','effect-pulse','effect-shake','effect-zoom'];
+const colors = ['#ff66cc','#ff3399','#ff4da6','#ff99cc','#ffb3d9','#ff0080','#ff0066','#ffffff','#ffeeee','#ffcccc'];
+const fullText = " I LOVE YOU IQRA ❤️"; let charIndex = 0;
+function createHeart() {
+  const h = document.createElement("div");
+  h.classList.add("heart");
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = (Math.random() * 20 + 10) + "px";
+  h.innerText = "❤️";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}
+function typeWriter() {
+  if (charIndex < fullText.length) {
+    loveText.innerHTML += fullText.charAt(charIndex);
+    charIndex++;
+    setTimeout(typeWriter, 150);
+  } else {
+    changeEffect();
+    setInterval(changeEffect, 3000);
+  }
+}
+function startLove() {
+  enterScreen.style.display = "none";
+  video.style.display = "block";
+  loveText.style.display = "block";
+  music.play();
+  typeWriter();
+  setInterval(createHeart, 300);
+}
+function changeEffect() {
+  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  loveText.className = "content " + randomEffect;
+  loveText.style.color = randomColor;
+}
+</script></body></html>
