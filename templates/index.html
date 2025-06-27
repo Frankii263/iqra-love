@@ -86,6 +86,11 @@
   <source src="{{ url_for('static', filename='new_music.mp3') }}" type="audio/mpeg">
 </audio>
 
+<!-- ✅ Menu Background Music Added -->
+<audio id="menu-music" autoplay loop>
+  <source src="{{ url_for('static', filename='menu_background_music.mp3') }}" type="audio/mpeg">
+</audio>
+
 <!-- Menu -->
 <div class="enter-screen" id="enterScreen">
   <h2 style="color:#fff;">❤️ Special for You, Pari ❤️</h2>
@@ -112,6 +117,7 @@
 const loveText = document.getElementById("loveText"),
       music = document.getElementById("bg-music"),
       newMusic = document.getElementById("new-music"),
+      menuMusic = document.getElementById("menu-music"),
       enterScreen = document.getElementById("enterScreen"),
       messageLine = document.getElementById("messageLine"),
       finalPopup = document.getElementById("finalPopup"),
@@ -188,6 +194,7 @@ function startLove() {
   enterScreen.style.display = "none";
   loveText.style.display = "block";
   messageLine.style.display = "block";
+  menuMusic.pause(); menuMusic.currentTime = 0;
   music.play();
   newMusic.pause(); newMusic.currentTime = 0;
   bgVideo.pause();
@@ -202,8 +209,9 @@ function startLove() {
 function showGallery() {
   document.body.className = "gallery-mode";
   enterScreen.style.display = "none";
+  menuMusic.pause(); menuMusic.currentTime = 0;
   music.pause(); music.currentTime = 0;
-  newMusic.play(); // ✅ Play gallery background music
+  newMusic.play();
   bgVideo.pause();
   gallerySection.style.display = "block";
   fetch("/images")
@@ -246,6 +254,7 @@ function goBack() {
   backBtn.style.display = "none";
   music.pause(); music.currentTime = 0;
   newMusic.pause(); newMusic.currentTime = 0;
+  menuMusic.play();
   bgVideo.play();
   clearInterval(heartInterval);
   clearTimeout(lineInterval);
@@ -255,13 +264,11 @@ function goBack() {
 gallerySection.addEventListener('click', function (e) {
   const x = e.clientX;
   const width = window.innerWidth;
-
   if (x < width / 2) {
     prevImage();
   } else {
     nextImage();
   }
-
   clearInterval(slideshowInterval);
   slideshowInterval = setInterval(nextImage, 5000);
 });
@@ -269,13 +276,11 @@ gallerySection.addEventListener('click', function (e) {
 gallerySection.addEventListener('touchstart', function (e) {
   const x = e.touches[0].clientX;
   const width = window.innerWidth;
-
   if (x < width / 2) {
     prevImage();
   } else {
     nextImage();
   }
-
   clearInterval(slideshowInterval);
   slideshowInterval = setInterval(nextImage, 5000);
 });
