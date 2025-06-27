@@ -1,1 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>I Love You Pari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: url('https://i.imgur.com/djA9l5e.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
 
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .enter-screen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      flex-direction: column;
+      z-index: 10;
+      position: relative;
+    }
+
+    .enter-screen button {
+      background: #ff4da6;
+      color: #fff;
+      padding: 20px 40px;
+      font-size: 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff4da6;
+      transition: 0.3s;
+      font-weight: bold;
+      margin: 10px;
+    }
+
+    .enter-screen button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #ff66cc;
+    }
+
+    .content, .message-line, .final-popup {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .content {
+      top: 30%;
+      font-size: 3em;
+      font-family: 'Dancing Script', cursive;
+      white-space: nowrap;
+      border-right: 3px solid #fff;
+      animation: blink-caret 0.75s step-end infinite;
+    }
+
+    .message-line {
+      top: 45%;
+      font-size: 1.8em;
+    }
+
+    .final-popup {
+      top: 40%;
+      display: none;
+      font-size: 1.8em;
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff4da6;
+    }
+
+    @keyframes blink-caret {
+      50% { border-color: transparent; }
+    }
+
+    .heart {
+      position: fixed;
+      color: red;
+      font-size: 24px;
+      animation: float 6s linear infinite, pulse 1.5s infinite;
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .colorful {
+      transition: all 0.5s ease;
+    }
+
+    #gallerySection {
+      display: none;
+      text-align: center;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      height: 100vh;
+      position: relative;
+    }
+
+    .gallery-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .fade-in { animation: fadeIn 1s ease; }
+    .slide-in-right { animation: slideInRight 1s ease; }
+    .zoom-in { animation: zoomIn 1s ease; }
+    .rotate-in { animation: rotateIn 1s ease; }
+    .pop-in { animation: popIn 1s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes rotateIn {
+      from { transform: rotate(-200deg); opacity: 0; }
+      to { transform: rotate(0); opacity: 1; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ff4da6;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 0 10px #ff4da6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="enter-screen" id="enterScreen">
+    <h2 style="color:#fff;">❤️ Special for You, Pari ❤️</h2>
+    <button onclick="startLove()">Enter</button>
+    <button onclick="showGallery()">Best Couple of the World</button>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="static/phir_bhi_tumko.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="new-music" loop>
+    <source src="static/new_music.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none;">Back</button>
+
+  <div class="content" id="loveText"></div>
+  <div class="message-line colorful" id="messageLine"></div>
+  <div class="final-popup" id="finalPopup"></div>
+
+  <div id="gallerySection">
+    <img id="slideshowImage" class="gallery-img" src="" alt="">
+    <button class="back-btn" onclick="location.reload()">Back</button>
+  </div>
+
+  <script>
+    const loveText = document.getElementById("loveText"),
+          music = document.getElementById("bg-music"),
+          newMusic = document.getElementById("new-music"),
+          enterScreen = document.getElementById("enterScreen"),
+          messageLine = document.getElementById("messageLine"),
+          finalPopup = document.getElementById("finalPopup"),
+          gallerySection = document.getElementById("gallerySection"),
+          slideshowImage = document.getElementById("slideshowImage"),
+          backBtn = document.getElementById("backBtn");
+
+    const colors = ['#ff66cc', '#ff3399', '#ff4da6', '#ff99cc', '#ffb3d9', '#ff0080', '#ff0066', '#ffffff', '#ffeeee', '#ffcccc'];
+    const fullText = " I LOVE YOU PARI ❤️";
+    const customLines = [
+      "mere sakoon ❤️", "merii ladlii shehzadii ❤️", "merii sab sy piiyari jawn ❤️", "merii rooh ❤️",
+      "merii rooh k sakoon ❤️", "merii chahto kii iklotii ❤️", "mere jeeny ki waja ❤️",
+      "merii takat ❤️", "mera sab kuch ho awp ❤️", "i love you apnii jan sy b ziiyadaw ❤️"
+    ];
+    const finalMessages = [...customLines, "Apna dil, apni saansein, apni duniya tumhein deta hoon ❤️"];
+
+    <script>
+  const images = [];
+  for (let i = 1; i <= 13; i++) {
+    images.push(`static/images/img${i}.jpg`);
+  }
+</script>
+    ;
+
+    const animationClasses = ["fade-in", "slide-in-right", "zoom-in", "rotate-in", "pop-in"];
+
+    let charIndex = 0, currentIndex = 0, slideshowInterval, heartInterval, lineInterval;
+
+    function createHeart() {
+      const h = document.createElement("div");
+      h.classList.add("heart");
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.fontSize = (Math.random() * 20 + 10) + "px";
+      h.innerText = "❤️";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 6000);
+    }
+
+    function typeWriter() {
+      if (charIndex < fullText.length) {
+        loveText.innerHTML += fullText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, 150);
+      } else {
+        showCustomLines(0);
+        heartInterval = setInterval(createHeart, 300);
+      }
+    }
+
+    function showCustomLines(index) {
+      if (index < customLines.length) {
+        messageLine.textContent = customLines[index];
+        messageLine.style.color = colors[Math.floor(Math.random() * colors.length)];
+        lineInterval = setTimeout(() => showCustomLines(index + 1), 2000);
+      } else {
+        messageLine.style.display = "none";
+        showFinalPopup();
+      }
+    }
+
+    function showFinalPopup() {
+      finalPopup.style.display = "block";
+      finalPopup.innerHTML = "";
+      let i = 0;
+      const showNext = () => {
+        if (i < finalMessages.length) {
+          const line = document.createElement("div");
+          line.textContent = finalMessages[i];
+          line.style.color = colors[Math.floor(Math.random() * colors.length)];
+          line.style.margin = "10px 0";
+          line.style.fontWeight = "bold";
+          finalPopup.appendChild(line);
+          i++;
+          setTimeout(showNext, 2000);
+        }
+      };
+      showNext();
+    }
+
+    function startLove() {
+      enterScreen.style.display = "none";
+      loveText.style.display = "block";
+      messageLine.style.display = "block";
+      music.play();
+      backBtn.style.display = "block";
+      charIndex = 0;
+      loveText.innerHTML = "";
+      messageLine.innerHTML = "";
+      finalPopup.innerHTML = "";
+      typeWriter();
+    }
+
+    function applyRandomAnimation() {
+      const animation = animationClasses[Math.floor(Math.random() * animationClasses.length)];
+      slideshowImage.className = "gallery-img";
+      slideshowImage.classList.add(animation);
+    }
+
+    function showImage(index) {
+      if (index >= 0 && index < images.length) {
+        slideshowImage.src = images[index];
+        applyRandomAnimation();
+      }
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage(currentIndex);
+    }
+
+    function startSlideshow() {
+      currentIndex = 0;
+      showImage(currentIndex);
+      slideshowInterval = setInterval(nextImage, 5000);
+    }
+
+    function showGallery() {
+      enterScreen.style.display = "none";
+      music.pause();
+      music.currentTime = 0;
+      newMusic.play();
+      gallerySection.style.display = "block";
+      startSlideshow();
+    }
+
+    function closeGallery() {
+      newMusic.pause();
+      newMusic.currentTime = 0;
+      clearInterval(slideshowInterval);
+      gallerySection.style.display = "none";
+      enterScreen.style.display = "flex";
+    }
+
+    function goBack() {
+      loveText.style.display = "none";
+      messageLine.style.display = "block";
+      finalPopup.style.display = "none";
+      enterScreen.style.display = "flex";
+      backBtn.style.display = "none";
+      music.pause();
+      music.currentTime = 0;
+      clearInterval(heartInterval);
+      clearTimeout(lineInterval);
+      charIndex = 0;
+      loveText.innerHTML = "";
+      messageLine.innerHTML = "";
+      finalPopup.innerHTML = "";
+      clearInterval(slideshowInterval);
+      newMusic.pause();
+      newMusic.currentTime = 0;
+      gallerySection.style.display = "none";
+    }
+  </script>
+</body>
+    </html>
